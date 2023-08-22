@@ -2,7 +2,7 @@
 
 <h1>Mokepon Project</h1>
 <br>
-<img src='/preview.png' style="width:70%;">
+<img src='/preview.png' style="width:70%;height:50%;">
 
 
 The Mokepon project is a personal project aimed at creating a fun game where you can face off other pokemons just as you did when you played roguelike games when you were younger.
