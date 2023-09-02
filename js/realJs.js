@@ -2,7 +2,12 @@ const $ = selector => document.getElementById(selector);
 let slideIndex = 1;
 const para = document.createElement("p");
 const lineBreak = document.createElement('br');
-
+/** the mascota class defines a new pet 
+*nombre = string
+*elemento = string
+*hp = float
+*df = float
+*/
 class mascotas {
     constructor(nombre,elmento,hp,df){
             this.nombre = nombre;
@@ -39,21 +44,24 @@ class mascotas {
         return(this.elemento);
     }
     
-    
+    /**La función ataque genera un valor aleatorio entre 1 y 3*/
     ataque(){
         let valorAtaque = aleatorio(1,3);
         return(valorAtaque);
     }
+    /**La función ataqueElemento genera un valor aleatorio entre 2 y 6*/
     ataqueElemento(){
         let ataqueElemento = aleatorio(2,6);
         return(ataqueElemento);
     }
+    /**La función sanación añade 2.5 puntos de vida a la vida base de la mascota*/
     sanacion(){
         let valorSanado = this.hp + 2.5;
         this.setHp(valorSanado)
         console.log("te has sanado");
         
     }
+/**La función recibirAtaque le quita vida a la vida base de la mascota usando la función ataque*/
     recibirAtaque(){
         let vida = this.hp;
         let valorAtaque = this.ataque();
@@ -61,6 +69,7 @@ class mascotas {
         vida = vida -(valorAtaque-absorcion);
         this.setHp(vida);
     }
+    /**La función recibirAtaqueElemental  le quita vida a la vida base según el elemento de la mascota atacante */
     recibirAtaqueELemental(ataque){
     let vida = this.getHp();
     let elementoMensajero = ataque[0];
@@ -84,6 +93,7 @@ class mascotas {
     }
 
     }
+    /** la función tablaDeComparación identifica que tan debil es un elemento de una mascota comparado con el de otro para poder calcular el valor de daño elemental */
     tablaDeComparacion(elementoMensajero,elementoReceptor){
         let tabla;
         let valor;
@@ -129,7 +139,7 @@ function startGame(){
     petButton.addEventListener("click",enfrentamiento)
   
 }
-//Start button which show the petSelection section of the page
+/**La función botonIniciar muestra la ventana donde se escogera la mascota del jugador*/
 function botonIniciar(){
     let sectionStart = $("start");
     let petSelection = $("petSelection");
@@ -143,8 +153,7 @@ function botonIniciar(){
 
 }
 /*PET SELECTION */
-
-//Generates a random value between min and max
+/** a función aleatorio genera un valor aleatorio entre un valor minimo y maximo*/
 function aleatorio(min,max){
     let difference = max -min;
     let rand = Math.random();
@@ -152,15 +161,16 @@ function aleatorio(min,max){
     rand = rand + min;
     return rand;
 }
-// Next/previous controls
+/**Son los botones de desplazamineto del carrousel para escoger la mascota*/
 function plusSlides(n) {
   showSlides(slideIndex += n);
 }
 // Thumbnail image controls
+/**Son los botones de desplazamineto del carrousel para escoger la mascota*/
 function currentSlide(n) {
   showSlides(slideIndex = n);
 }
-
+/**La función showSlides muestra cada una de las mascotas del carrousel*/
 function showSlides(n) {
   let i;
   let slides = document.getElementsByClassName("petSlide");
@@ -171,8 +181,8 @@ function showSlides(n) {
   }
   slides[slideIndex-1].style.display = "block";
 }
+    /**La función createPet crea un elemento de la clase mascota al seleccionarla en el carrousel*/
 function createPet(){
-    /*Creates the selected pet*/ 
     let n = slideIndex;
     let health = 10;
     let defense = 2;
@@ -202,7 +212,7 @@ function createPet(){
     }
     
 }
-//Hides the petSelection part and shows the battleSection interface
+/**La función enfrentamiento esconde la sección de petSelection y muestra la sección de la batalla*/
 function enfrentamiento(){
     let petSelection = $("petSelection");
     let petButton = $("selectPetButton");
@@ -222,7 +232,7 @@ function enfrentamiento(){
 }
 /*BATTLE SECTION */
 
-//Selects the enemy pet
+/**La función enemyPet selecciona uno de los pokemones aleatoriamente*/
 function enemyPet(){
     let n = slideIndex;
     let health = 10;
@@ -258,7 +268,7 @@ function enemyPet(){
     
 
 }
-//display the images corresponding to the selected pet.
+/**Muestra las imagenes de la mascota seleccionada*/
 function mostrarJugador(){
    let playerPicture  = document.getElementsByClassName("petDisplay");
    let playerPet = player.nombre;
@@ -287,7 +297,7 @@ function mostrarJugador(){
     break;
    }
 }
-//ataques
+/**La función playerAttacks muestra los tipos de ataque de la mascota del jugador*/
 function playerAttacks(){
     let botonNormalAttack = $("ataque");
     let botonElementalAttack =$("ataqueElemental");
@@ -304,12 +314,14 @@ function addText(texto){
     element.appendChild(para);
     element.appendChild(lineBreak);
 }
+/**la función normalAttack ataca al enemigo del jugador con un ataque normal*/
 function normalAttack(){
     enemy.recibirAtaque();
     updateStats("enemy");
     enemyAttack();
     addText("\nel Jugador ha realizado un ataque normal\n");
 }
+/**la función elementalAttack ataca al enemigo del jugador con un ataque elemental*/
 function elementalAttack(){
     let texto = "\n el Jugador ha realizado un ataque normal \n ";
     let attackMatrix = [player.getElemento(),player.ataqueElemento()];
@@ -319,6 +331,7 @@ function elementalAttack(){
     addText(texto);
 
 }
+/**la función heal sana al jugador 2.5 puntos de vida*/
 function heal(){
     let texto = "\n el Jugador se ha sanado \n ";
     player.sanacion();
@@ -327,6 +340,7 @@ function heal(){
     addText(texto);
 
 }
+/**La función enemyAttack genera una de las tres acciones disponibles aleatoriamente para atacar al jugador o sanarse a si mismo,*/
 function enemyAttack(){
     let texto;
     let valorAtaque = aleatorio(0,2);
@@ -352,6 +366,7 @@ function enemyAttack(){
             addText(texto);
     }
 }
+/**La función displayStats muestra los atributos del jugador*/
 function displayStats(){
     let playerHealth = player.getHp();
     let enemyHealth = enemy.getHp();
